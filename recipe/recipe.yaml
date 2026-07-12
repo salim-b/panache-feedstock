@@ -18,7 +18,7 @@ build:
     content:
       - if: unix
         then:
-          - cargo auditable install --no-track --locked --bin=panache --root="$PREFIX" --path=.
+          - cargo auditable install --path=. --root="$PREFIX" --no-track --locked --bin=panache
           # copy man page and shell completion files
           - mkdir -p "$PREFIX"/share/man/man1 "$PREFIX"/share/bash-completion/completions "$PREFIX"/share/fish/vendor_completions.d "$PREFIX"/share/zsh/site-functions
           - cp target/man/panache.1            "$PREFIX"/share/man/man1/panache.1
@@ -27,7 +27,7 @@ build:
           - cp target/completions/_panache     "$PREFIX"/share/zsh/site-functions/_panache
       - if: win
         then:
-          - cargo auditable install --no-track --locked --bin=panache --root="%LIBRARY_PREFIX%" --path=.
+          - cargo auditable install --path=. --root="%LIBRARY_PREFIX%" --no-track --locked --bin=panache
           # copy man page and shell completion files
           - mkdir "%LIBRARY_PREFIX%"\share\man\man1
           - mkdir "%LIBRARY_PREFIX%"\share\bash-completion\completions
@@ -49,10 +49,8 @@ requirements:
 
 tests:
   - script:
-      - if: build_platform == host_platform
-        then:
-          - panache --help
-          - panache --version
+      - panache --help
+      - panache --version
   - package_contents:
       bin:
         - panache
